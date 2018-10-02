@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class Person(models.Model):
@@ -26,5 +27,5 @@ class Route(models.Model):
 class Schedule(models.Model):
 	bus = models.ForeignKey(Bus, on_delete=models.CASCADE)
 	driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
-	startTime = models.DateTimeField()
-	blocks = models.IntegerField()
+	start_block = models.IntegerField(validators=[MaxValueValidator(47), MinValueValidator(0)])
+	duration_block = models.IntegerField(default=0, validators=[MaxValueValidator(47), MinValueValidator(0)])
