@@ -29,3 +29,4 @@ class Schedule(models.Model):
 	driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
 	start_block = models.IntegerField(validators=[MaxValueValidator(47), MinValueValidator(0)])
 	duration_block = models.IntegerField(default=0, validators=[MaxValueValidator(47), MinValueValidator(0)])
+	day = models.DateField()
