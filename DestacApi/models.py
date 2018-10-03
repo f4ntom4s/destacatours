@@ -3,7 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class Person(models.Model):
-    name = models.CharField(max_length=30)
+    first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
 
 
