@@ -19,14 +19,19 @@ class Terminal(models.Model):
     name = models.CharField(max_length=20)
 
 
-#class Route(models.Model):
-#    origin = models.ForeignKey(Terminal, on_delete=models.CASCADE)
-#    destination = models.ForeignKey(Terminal, on_delete=models.CASCADE)
+class Route(models.Model):
+    origin = models.ForeignKey(Terminal, on_delete=models.CASCADE, related_name='terminal_origin')
+    destination = models.ForeignKey(Terminal, on_delete=models.CASCADE, related_name='terminal_destination')
 
 
 class Schedule(models.Model):
     bus = models.ForeignKey(Bus, on_delete=models.CASCADE)
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
-    start_block = models.IntegerField(validators=[MaxValueValidator(47), MinValueValidator(0)])
-    duration_block = models.IntegerField(default=0, validators=[MaxValueValidator(47), MinValueValidator(0)])
-    day = models.DateField()
+    start_block = models.DateTimeField(null=False)
+    end_time = models.DateTimeField(null=False)
+    route = models.ForeignKey(Route, on_delete=models.CASCADE, null=True)
+
+
+class Passenger(models.Model):
+    travel = models.ForeignKey(Schedule, on_delete=models.CASCADE)
+    seat = models.PositiveIntegerField(validators=[MaxValueValidator(20)])

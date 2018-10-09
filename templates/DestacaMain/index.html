@@ -1,0 +1,25 @@
+{% extends 'DestacaMain/base.html' %}
+{% block 'main' %}
+<div class="container-fluid row pt-5" ng-app="myApp" ng-controller="personController">
+  <div class="col-sm-2">
+  </div>
+  <div class="col-sm-8">
+    <h1 class="h1">Drivers</h1>
+    <div>
+      {{ persons }}
+    </div>
+  </div>
+</div>
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('personController', function($scope, $http) {
+      $http.get('/api/persons').then(function(response){
+          var dataset = "";
+          for(var i = 0; i < response.data.length; i++){
+              dataset += "<div>" + response.data[i].first_name + "</div>";
+          }
+          $scope.persons = dataset;
+        });
+    });
+</script>
+{% endblock %}
