@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js'>
+  </script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <body>
+    <div ng-app='destacApp' ng-controller='destacontroller' class="container text-center">
+      <table class="table table-dark table-hover table-sm">
+        <thead>
+          <tr>
+            <th scope="row">Time Block</th>
+            <th scope="col">Monday</th>
+            <th scope="col">Tuesday</th>
+            <th scope="col">Wednesday</th>
+            <th scope="col">Tuesday</th>
+            <th scope="col">Friday</th>
+            <th scope="col">Saturday</th>
+            <th scope="col">Sunday</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat='x in blocks'>
+            <th scope="row">{{ x.hour_block_start }} - {{ x.hour_block_end }}</th>
+            <td>{{ x.monday }}</td>
+            <td>{{ x.tuesday }}</td>
+            <td>{{ x.wednesday }}</td>
+            <td>{{ x.tuesday }}</td>
+            <td>{{ x.friday }}</td>
+            <td>{{ x.saturday }}</td>
+            <td>{{ x.sunday }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+
+
+  <script>
+    function getData()
+    {
+      var rawData = {
+        'monday': [
+          {'name': 'Augusto', 'start_time': '08:00', 'end_time': '09:00'},
+          {'name': 'Augusto', 'start_time': '09:30', 'end_time': '11:00'},
+          {'name': 'Augusto', 'start_time': '15:00', 'end_time': '16:00'},
+          {'name': 'Augusto', 'start_time': '17:00', 'end_time': '19:30'}
+        ],
+        'tuesday': [
+          {'name': 'Jorge', 'start_time': '08:00', 'end_time': '09:00'},
+          {'name': 'Jorge', 'start_time': '11:30', 'end_time': '12:00'},
+          {'name': 'Jorge', 'start_time': '15:00', 'end_time': '16:00'},
+          {'name': 'Jorge', 'start_time': '17:00', 'end_time': '19:30'}
+        ],
+        'wednesday': [
+          {'name': 'Sebastian', 'start_time': '08:00', 'end_time': '09:00'},
+          {'name': 'Sebastian', 'start_time': '10:30', 'end_time': '12:00'},
+          {'name': 'Sebastian', 'start_time': '15:00', 'end_time': '16:00'},
+          {'name': 'Sebastian', 'start_time': '17:00', 'end_time': '19:30'}
+        ],
+        'thursday': [
+          {'name': 'Abdel', 'start_time': '08:00', 'end_time': '09:00'},
+          {'name': 'Abdel', 'start_time': '09:30', 'end_time': '12:00'},
+          {'name': 'Abdel', 'start_time': '15:00', 'end_time': '16:00'},
+          {'name': 'Abdel', 'start_time': '17:00', 'end_time': '19:30'}
+        ],
+        'friday': [
+          {'name': 'Andres', 'start_time': '08:00', 'end_time': '09:00'},
+          {'name': 'Andres', 'start_time': '09:30', 'end_time': '12:00'},
+          {'name': 'Andres', 'start_time': '15:00', 'end_time': '16:00'},
+          {'name': 'Andres', 'start_time': '17:00', 'end_time': '19:30'}
+        ]
+      }
+
+      var days = Object.keys(rawData);
+
+      var startHourRaw = Math.min(...days.map(p => Math.min(...rawData[p].map(b => parseInt(b['start_time'].split(":").join(""))))));
+      var finishHourRaw = Math.max(...days.map(p => Math.max(...rawData[p].map(b => parseInt(b['end_time'].split(":").join(""))))));
+
+      var startHour = startHourRaw;
+      var finishHour = finishHourRaw;
+
+      if(String(startHourRaw).slice(-2) == "30"){ startHour += 20; }
+      if(String(finishHourRaw).slice(-2) == "30"){ finishHour += 20; }
+      var numBlocks = (finishHour - startHour)/50;
+
+      var uncompresedData = [];
+      for(var i = 0; i < numBlocks; i++){
+        var hour = startHour + i*50;
+        var rowRaw = days.reduce(
+          function(total, value){
+            var rowData = rawData[value].find(b =>  parseInt(b['start_time'].split(":").join("")) <= hour && parseInt(b['end_time'].split(":").join("")) > hour);
+
+            if(!(typeof rowData === 'undefined'))
+              total[value] = rowData['name']
+            return total;
+          }, {});
+
+
+
+
+        rowRaw["hour_block_start"] = String(parseInt(startHour/100) +  parseInt(i/2)) + ":" + ((i%2)? "30": "00");
+        rowRaw["hour_block_end"] = String(parseInt((startHour+50)/100) +  parseInt(i/2)) + ":" + ((i%2)? "00": "30");
+        uncompresedData.push(rowRaw);
+      }
+      return uncompresedData;
+    }
+    var app = angular.module('destacApp', []);
+    app.controller('destacontroller', function($scope, $http) {
+      $scope.blocks = getData();
+
+    });
+  </script>
+</html>
