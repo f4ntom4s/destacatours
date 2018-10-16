@@ -16,19 +16,13 @@ Including another URLconf
 from django.conf.urls import url, include
 from rest_framework import routers
 from DestacApi import views
-from DestacaMain import views as views2
-from django.conf import settings
-from django.conf.urls.static import static
 
 router = routers.DefaultRouter()
-router.register(r'persons', views.PersonViewSet)
 router.register(r'buses', views.BusViewSet)
 router.register(r'terminals', views.TerminalViewSet)
 router.register(r'drivers', views.DriverViewSet)
 
 urlpatterns = [
     url(r'^api/', include(router.urls)),
-    url(r'^destacapi/', include('rest_framework.urls', namespace='rest_framework')),
-    url('^$', views2.index, name='index'),
-
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    url(r'^destacapi/', include('rest_framework.urls', namespace='rest_framework'))
+]

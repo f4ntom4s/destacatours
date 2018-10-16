@@ -1,0 +1,29 @@
+<div class="container-fluid">
+  <div class="container-fluid">
+    <form #newDriver="ngForm" (ngSubmit)="addDriver(newDriver)">
+      <label for="first_name">Nombres: </label>
+      <input type="text" name="first_name" #first_name="ngModel" [(ngModel)]="new_driver.first_name" required/><br/>
+      <label for="last_name">Apellidos: </label>
+      <input type="text" name="last_name" #last_name="ngModel" [(ngModel)]="new_driver.last_name" required/><br/>
+      <div *ngIf="editing; then editingButton else addingButton"></div>
+      <ng-template #editingButton>
+        <button [disabled]="!newDriver.form.valid">Editar</button>
+      </ng-template>
+      <ng-template #addingButton>
+        <button [disabled]="!newDriver.form.valid">Agregar</button>
+      </ng-template>
+    </form>
+  </div>
+  <hr>
+  <div class="container-fluid">
+    <ul class="list-group">
+      <li *ngFor="let driver of array_conductores" class="list-group-item">
+        {{ driver.last_name + ', ' + driver.first_name }}
+        <button (click)="editDriver(driver['id'])">Editar</button>
+        <button (click)="deleteDriver(driver['id'])">Borrar</button>
+
+      </li>
+    </ul>
+  </div>
+  {{ status }}
+</div>

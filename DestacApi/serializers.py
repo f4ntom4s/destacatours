@@ -1,11 +1,5 @@
-from DestacApi.models import Person, Bus, Terminal, Driver
+from DestacApi.models import Bus, Terminal, Driver
 from rest_framework import serializers
-
-
-class PersonSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Person
-        fields = ('first_name', 'last_name')
 
 
 class BusSerializer(serializers.HyperlinkedModelSerializer):
@@ -17,10 +11,10 @@ class BusSerializer(serializers.HyperlinkedModelSerializer):
 class TerminalSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Terminal
-        fields = '__all__'
+        fields = ['id', 'name', 'city']
 
 
 class DriverSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Driver
-        fields = '__all__'
+        fields = ['id', 'first_name', 'last_name']

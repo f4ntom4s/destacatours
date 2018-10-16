@@ -1,0 +1,28 @@
+<div class="container-fluid">
+  <div class="container-fluid">
+    <form #newTerminal="ngForm" (ngSubmit)="addTerminal(newTerminal)">
+      <label for="name">Nombre: </label>
+      <input type="text" name="name" #name="ngModel" [(ngModel)]="new_terminal.name" required/><br/>
+      <label for="city">Ciudad: </label>
+      <input type="text" name="city" #city="ngModel" [(ngModel)]="new_terminal.city" required/><br/>
+      <div *ngIf="editing; then editingButton else addingButton"></div>
+      <ng-template #editingButton>
+        <button [disabled]="!newTerminal.form.valid">Editar</button>
+      </ng-template>
+      <ng-template #addingButton>
+        <button [disabled]="!newTerminal.form.valid">Agregar</button>
+      </ng-template>
+    </form>
+  </div>
+  <hr>
+  <div class="container-fluid">
+    <ul class="list-group">
+      <li *ngFor="let terminal of array_terminales" class="list-group-item">
+        {{ terminal.name + ' (' + terminal.city + ')'}}
+        <button (click)="editTerminal(terminal['id'])">Editar</button>
+        <button (click)="deleteTerminal(terminal['id'])">Borrar</button>
+
+      </li>
+    </ul>
+  </div>
+</div>
