@@ -8,13 +8,15 @@ import { AppComponent } from './app.component';
 import { ConductoresComponent } from './components/conductores/conductores.component';
 import { HttpClientModule } from "@angular/common/http";
 import { TerminalsComponent } from './components/terminals/terminals.component';
+import { BusesComponent } from './components/buses/buses.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     ConductoresComponent,
-    TerminalsComponent
+    TerminalsComponent,
+    BusesComponent
   ],
   imports: [
     BrowserModule,
